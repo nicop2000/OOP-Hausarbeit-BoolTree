@@ -1,11 +1,11 @@
 package de.fhkiel.main;
 
-public abstract class BinaryExpression implements Assertion {
+public abstract class BinaryAssertion implements Assertion {
 
     private Assertion rightBranch = null;
     private Assertion leftBranch = null;
 
-    BinaryExpression(final Assertion left, final Assertion right) {
+    BinaryAssertion(final Assertion left, final Assertion right) {
         this.setLeftBranch(left).setRightBranch(right);
     }
 
@@ -13,7 +13,7 @@ public abstract class BinaryExpression implements Assertion {
         return rightBranch;
     }
 
-    public BinaryExpression setRightBranch(Assertion rightBranch) {
+    public BinaryAssertion setRightBranch(Assertion rightBranch) {
         this.rightBranch = rightBranch;
         return this;
     }
@@ -22,7 +22,7 @@ public abstract class BinaryExpression implements Assertion {
         return leftBranch;
     }
 
-    public BinaryExpression setLeftBranch(Assertion leftBranch) {
+    public BinaryAssertion setLeftBranch(Assertion leftBranch) {
         this.leftBranch = leftBranch;
         return this;
     }

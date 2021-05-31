@@ -1,8 +1,8 @@
 package de.fhkiel.main;
 
-public class OrExpression extends BinaryExpression{
+public class OrAssertion extends BinaryAssertion {
 
-    OrExpression(Assertion left, Assertion right) {
+    OrAssertion(Assertion left, Assertion right) {
         super(left, right);
     }
 

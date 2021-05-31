@@ -1,20 +1,18 @@
 package de.fhkiel.main;
 
-public class AndExpression extends BinaryExpression {
+public class AndAssertion extends BinaryAssertion {
 
 
-    AndExpression(Assertion left, Assertion right) {
+    AndAssertion(Assertion left, Assertion right) {
         super(left, right);
     }
 
     @Override
     public void print() {
         System.out.print("AND EXPR");
-
         this.getLeftBranch().print();
         System.out.print("&&");
         this.getRightBranch().print();
-
     }
 
     @Override
