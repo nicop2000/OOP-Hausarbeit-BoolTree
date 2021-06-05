@@ -8,14 +8,30 @@ public class XOR extends BinaryAssertion {
 
     @Override
     public boolean getLogicalValue() {
-        if (getLeftBranch().getLogicalValue() && !getRightBranch().getLogicalValue()) {
-            return true;
-        }
-        return !getLeftBranch().getLogicalValue() && getRightBranch().getLogicalValue();
+        return getLeftBranch().getLogicalValue() ^ getRightBranch().getLogicalValue();
+    }
+
+
+    @Override
+    public String acceptVisitor(Visitor v) {
+        return v.visit(this);
     }
 
     @Override
-    public void print() {
+    public void codeausgabe(VisitorAusgabe v) {
+        v.codeausgabe(this);
+    }
 
+    @Override
+    public int size() {
+        int c = getLeftBranch().size() + getRightBranch().size() + 1;
+        return c;
+    }
+
+    @Override
+    public void print(String einrueckung) {
+        System.out.println("^");
+        this.getLeftBranch().print(einrueckung + "  ");
+        this.getRightBranch().print(einrueckung + "  ");
     }
 }

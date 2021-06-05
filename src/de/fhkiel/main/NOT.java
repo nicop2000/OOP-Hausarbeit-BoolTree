@@ -27,9 +27,26 @@ public class NOT implements Assertion{
     }
 
     @Override
-    public void print() {
-        System.out.print("–");
-        System.out.print(getMyNOTAssertion().getLogicalValue());
+    public String acceptVisitor(Visitor v) {
+        return v.visit(this);
+    }
+
+    @Override
+    public void codeausgabe(VisitorAusgabe v) {
+        v.codeausgabe(this);
+    }
+
+    @Override
+    public int size() {
+        int d = getMyNOTAssertion().size() + 1;
+        return d;
+    }
+
+    @Override
+    public void print(String einrueckung) {
+        System.out.print(einrueckung + "  "+ "–");
+        getMyNOTAssertion().print(einrueckung + "  ");
 
     }
+
 }

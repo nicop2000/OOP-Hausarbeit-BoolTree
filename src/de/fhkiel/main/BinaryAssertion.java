@@ -5,9 +5,12 @@ public abstract class BinaryAssertion implements Assertion {
     private Assertion rightBranch = null;
     private Assertion leftBranch = null;
 
+
     BinaryAssertion(final Assertion left, final Assertion right) {
         this.setLeftBranch(left).setRightBranch(right);
     }
+
+
 
     public Assertion getRightBranch() {
         return rightBranch;
