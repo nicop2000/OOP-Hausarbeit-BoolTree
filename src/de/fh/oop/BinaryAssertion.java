@@ -1,4 +1,4 @@
-package de.fhkiel.main;
+package de.fh.oop;
 
 public abstract class BinaryAssertion implements Assertion {
 

@@ -1,4 +1,4 @@
-package de.fhkiel.main;
+package de.fh.oop;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,15 +11,15 @@ public class Parser {
         String[] ausdruck = expression.split(" ");
 
         List<Assertion> myAssertions = new ArrayList<>();
-        for (int i = 0; i < ausdruck.length; i++) {
-            if (ausdruck[i].equalsIgnoreCase("true") || ausdruck[i].equalsIgnoreCase("false")) {
-                myAssertions.add((new Value(Boolean.valueOf(ausdruck[i]))));
-            } else if (ausdruck[i].equalsIgnoreCase("&&")) myAssertions.add((new AndAssertion(null, null)));
-            else if (ausdruck[i].equalsIgnoreCase("||")) myAssertions.add((new OrAssertion(null, null)));
-            else if (ausdruck[i].equalsIgnoreCase("^")) myAssertions.add((new XOR(null, null)));
-            else if (ausdruck[i].equalsIgnoreCase("NOT")) myAssertions.add((new NOT(null)));
-            else if (ausdruck[i].equalsIgnoreCase("(")) myAssertions.add(null);
-            else if (ausdruck[i].equalsIgnoreCase(")")) myAssertions.add(null);
+        for (String s : ausdruck) {
+            if (s.equalsIgnoreCase("true") || s.equalsIgnoreCase("false")) {
+                myAssertions.add((new Value(Boolean.valueOf(s))));
+            } else if (s.equalsIgnoreCase("&&")) myAssertions.add((new AndAssertion(null, null)));
+            else if (s.equalsIgnoreCase("||")) myAssertions.add((new OrAssertion(null, null)));
+            else if (s.equalsIgnoreCase("^")) myAssertions.add((new XOR(null, null)));
+            else if (s.equalsIgnoreCase("NOT")) myAssertions.add((new NOT(null)));
+            else if (s.equalsIgnoreCase("(")) myAssertions.add(null);
+            else if (s.equalsIgnoreCase(")")) myAssertions.add(null);
         }
 
         List<String> neuAusdruck = new ArrayList<>();

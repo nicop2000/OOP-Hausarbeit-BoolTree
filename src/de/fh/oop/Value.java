@@ -1,4 +1,6 @@
-package de.fhkiel.main;
+package de.fh.oop;
+
+import java.util.List;
 
 public class Value implements Assertion{
 
@@ -15,8 +17,8 @@ public class Value implements Assertion{
     }
 
     @Override
-    public String acceptVisitor(Visitor v) {
-        return v.visit(this);
+    public Integer acceptVisitor(Visitor v, List<Assertion> myAssertions, int i) {
+        return v.visit(this, myAssertions, i);
     }
 
     @Override

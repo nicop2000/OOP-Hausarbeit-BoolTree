@@ -1,11 +1,13 @@
-package de.fhkiel.main;
+package de.fh.oop;
+
+import java.util.List;
 
 public class AndAssertion extends BinaryAssertion {
 
     @Override
     public int size() {
-        int b = getLeftBranch().size() + getRightBranch().size() + 1;
-        return b;
+        return getLeftBranch().size() + getRightBranch().size() + 1;
+
     }
 
     AndAssertion(Assertion left, Assertion right) {
@@ -26,8 +28,8 @@ public class AndAssertion extends BinaryAssertion {
     }
 
     @Override
-    public String acceptVisitor(Visitor v) {
-       return v.visit(this);
+    public Integer acceptVisitor(Visitor v, List<Assertion> myAssertions, int i) {
+       return v.visit(this, myAssertions, i);
     }
 
     @Override

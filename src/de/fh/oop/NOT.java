@@ -1,4 +1,6 @@
-package de.fhkiel.main;
+package de.fh.oop;
+
+import java.util.List;
 
 public class NOT implements Assertion{
     private Assertion myNOTAssertion = null;
@@ -27,8 +29,8 @@ public class NOT implements Assertion{
     }
 
     @Override
-    public String acceptVisitor(Visitor v) {
-        return v.visit(this);
+    public Integer acceptVisitor(Visitor v, List<Assertion> myAssertions, int i) {
+        return v.visit(this, myAssertions, i);
     }
 
     @Override
@@ -38,8 +40,8 @@ public class NOT implements Assertion{
 
     @Override
     public int size() {
-        int d = getMyNOTAssertion().size() + 1;
-        return d;
+        return getMyNOTAssertion().size() + 1;
+
     }
 
     @Override

@@ -1,4 +1,6 @@
-package de.fhkiel.main;
+package de.fh.oop;
+
+import java.util.List;
 
 public interface Assertion {
 
@@ -8,7 +10,7 @@ public interface Assertion {
 
     void print(String einrueckung);
 
-    String acceptVisitor(Visitor v);
+    Integer acceptVisitor(Visitor v, List<Assertion> myAssertion, int i);
 
     void codeausgabe(VisitorAusgabe v);
 
