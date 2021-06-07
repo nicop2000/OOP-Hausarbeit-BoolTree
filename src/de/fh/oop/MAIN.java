@@ -1,29 +1,24 @@
 package de.fh.oop;
 
+import de.fh.oop.treenodes.Expression;
+import de.fh.oop.util.Parser;
+import de.fh.oop.util.visitor.Visitor4Equals;
+import de.fh.oop.util.visitor.VisitorAusgabe;
+
 import java.util.Scanner;
 
 public class MAIN {
 
     public static void main(String[] args) {
-        Scanner myScanner = new Scanner(System.in);
         System.out.println("Bitte einen Bool'schen Ausdruck eingeben (mit Leerzeichen trennen, außer bei Klammern): ");
-        String eingabeScanner = new Scanner(System.in).nextLine();
-
-        String eingabe = "true && false && true || ( true && ( false || false ) ^ false )";
-        String eingabe2 = "true && NOT false && true || ( true && ( false || false ) ^ false )";
-        String eingabe3 = "NOT ( true && NOT false && true || ( true && ( false || false ) ^ false ) )";
-        String forPrint = "true && false || false";
-        Assertion myAssertionn = new AndAssertion(new Value(true), new OrAssertion(new Value(false), new AndAssertion(new Value(true), new Value(false))));
-
-        Assertion myAsserionnCode = new AndAssertion(new Value(true), new OrAssertion(new Value(false), new AndAssertion(new Value(true), new Value(false))));
-
-//        System.out.println(eingabe);
-
-        Assertion myAssertion = ParserNeu.parseString(eingabeScanner);
-
-        Assertion forPrinting = ParserNeu.parseString(forPrint);
-        myAssertion.print("");
-
+        String inputScanner = new Scanner(System.in).nextLine();
+        Expression myExpression = Parser.parseString(inputScanner);
+        myExpression.print("");
+        String code = myExpression.codeausgabe(VisitorAusgabe.getInstance());
+        System.out.println(code);
+        Expression myExpressionCopy = myExpression.copy();
+        myExpressionCopy.codeausgabe(VisitorAusgabe.getInstance());
+//        System.out.println("myExpression.equals(myExpressionCopy): " + myExpression.acceptVisitor(new Visitor4Equals(), myExpressionCopy));
 
     }
 }

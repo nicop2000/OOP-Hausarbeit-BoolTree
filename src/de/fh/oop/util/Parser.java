@@ -1,26 +1,33 @@
-package de.fh.oop;
+package de.fh.oop.util;
+
+import de.fh.oop.treenodes.Expression;
+import de.fh.oop.util.factory.BinaryFactory;
+import de.fh.oop.util.factory.UnaryFactory;
+import de.fh.oop.util.visitor.VisitorBuildTree;
+import de.fh.oop.util.visitor.VisitorNot;
+import de.fh.oop.util.factory.ValueFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ParserNeu {
+public class Parser {
 
 
-    public static Assertion parseString(String expression) {
+    public static Expression parseString(String expression) {
         String[] ausdruck = expression.toLowerCase().split(" ");
         List<String> ausdruckListe = new ArrayList<>();
-        List<Assertion> myAssertions = new ArrayList<>();
+        List<Expression> myExpressions = new ArrayList<>();
         List<String> inParas = new ArrayList<>();
         Collections.addAll(ausdruckListe, ausdruck);
         for (int i = 0; i < ausdruckListe.size(); i++) {
             switch (ausdruckListe.get(i)) {
-                case "&&" -> myAssertions.add(new AndAssertion(null, null));
-                case "||" -> myAssertions.add(new OrAssertion(null, null));
-                case "^" -> myAssertions.add(new XOR(null, null));
-                case "NOT" -> myAssertions.add(new NOT(null));
-                case "true" -> myAssertions.add(new Value(true));
-                case "false" -> myAssertions.add(new Value(false));
+                case "&&" -> myExpressions.add(BinaryFactory.AND.create(null, null));
+                case "||" -> myExpressions.add(BinaryFactory.OR.create(null, null));
+                case "^" -> myExpressions.add(BinaryFactory.XOR.create(null, null));
+                case "NOT" -> myExpressions.add(UnaryFactory.NOT.create(null));
+                case "true" -> myExpressions.add(ValueFactory.VALUE.create(true));
+                case "false" -> myExpressions.add(ValueFactory.VALUE.create(false));
                 case "(" -> {
                     int klammern = 0;
                     while (!ausdruckListe.get(i).equals(")") || klammern != 1) {
@@ -38,26 +45,24 @@ public class ParserNeu {
                     for (String s : inParas) {
                         sb.append(s).append(" ");
                     }
-                    myAssertions.add(parseString(sb.toString()));
+                    myExpressions.add(parseString(sb.toString()));
                 }
             }
         }
-        if (myAssertions.size() > 1) {
-            for (int i = 0; i < myAssertions.size(); i++) {
-                i = myAssertions.get(i).acceptVisitor(new VisitorNOT(), myAssertions, i);
+        if (myExpressions.size() > 1) {
+            for (int i = 0; i < myExpressions.size(); i++) {
+                i = myExpressions.get(i).acceptVisitor(VisitorNot.getInstance(), myExpressions, i);
 
             }
-            for (int i = 0; i < myAssertions.size(); i++) {
-                i = myAssertions.get(i).acceptVisitor(new VisitorBuildTree(), myAssertions, i);
+            for (int i = 1; i < myExpressions.size() && myExpressions.size() > 1; i++) {
+                i = myExpressions.get(i).acceptVisitor(VisitorBuildTree.getInstance(), myExpressions, i);
 
             }
         }
-
-
-        if (myAssertions.size() > 1) {
+        if (myExpressions.size() > 1) {
         throw new IllegalArgumentException("Der eingegebene Ausdruck ist syntaktisch nicht korrekt! Der folgende Teil ist fehlerhaft: " + expression);
 
 }
-        return  myAssertions.get(0);
+        return  myExpressions.get(0);
     }
 }
