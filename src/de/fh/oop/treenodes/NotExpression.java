@@ -1,8 +1,9 @@
 package de.fh.oop.treenodes;
 
+import de.fh.oop.util.visitor.Visitor4Casting;
 import de.fh.oop.util.visitor.Visitor4Tree;
 import de.fh.oop.util.visitor.Visitor4Equals;
-import de.fh.oop.util.visitor.Visitor4Upcasting;
+
 import de.fh.oop.util.visitor.VisitorAusgabe;
 import de.fh.oop.util.factory.UnaryFactory;
 
@@ -16,11 +17,11 @@ public class NotExpression implements Expression {
     }
 
     @Override
-    public boolean equalStructure(Visitor4Equals v, Expression expression) {
-        if (1 == 1) {
+    public boolean equalStructure(final Visitor4Equals v, final Expression expression) {
+        if (expression.getClass() != this.getClass()) {
             return false;
         }
-        return this.myNOTExpression.equals(((NotExpression) expression).getMyNOTAssertion());
+        return this.myNOTExpression.equalStructure(v, ((NotExpression) expression).getMyNOTAssertion());
     }
 
     public NotExpression setMyNOTAssertion(final Expression notExpression) {
@@ -38,13 +39,23 @@ public class NotExpression implements Expression {
     }
 
     @Override
-    public Integer acceptVisitor(Visitor4Tree v, List<Expression> myExpressions, int i) {
+    public <R, B, C> R acceptVisitor(final Visitor4Tree<R, B, C> v, final B myExpressions, final C i) {
         return v.visit(this, myExpressions, i);
     }
 
     @Override
-    public boolean equalContent(Expression expression) {
+    public boolean equalContent(final Expression expression) {
         return this.getLogicalValue() == expression.getLogicalValue();
+    }
+
+    @Override
+    public Boolean equal(final Visitor4Equals v, final Expression exp) {
+        return null;
+    }
+
+//    @Override
+    public NotExpression cast(final Visitor4Casting v) {
+        return null;
     }
 
     @Override
@@ -52,10 +63,10 @@ public class NotExpression implements Expression {
         return UnaryFactory.NOT.create(getMyNOTAssertion());
     }
 
-    @Override
-    public String codeausgabe(VisitorAusgabe v) {
-        return v.codeausgabe(this);
-    }
+//    @Override
+//    public String codeausgabe(VisitorAusgabe v) {
+//        return v.codeausgabe(this);
+//    }
 
     @Override
     public int size() {
@@ -63,9 +74,9 @@ public class NotExpression implements Expression {
     }
 
     @Override
-    public void print(String einrueckung) {
-        System.out.print(einrueckung + "  "+ "–");
-        getMyNOTAssertion().print(einrueckung + "  ");
+    public void print(final String einrueckung) {
+        System.out.print("–");
+        getMyNOTAssertion().print(einrueckung);
 
     }
 

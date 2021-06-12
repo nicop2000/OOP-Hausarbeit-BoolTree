@@ -4,34 +4,30 @@ import de.fh.oop.treenodes.*;
 
 import java.util.List;
 
-public class VisitorNot implements Visitor4Tree {
+public class VisitorNot implements Visitor4Tree<Integer, List<Expression>, Integer> {
 
-    private static VisitorNot instance = null;
-    public synchronized static VisitorNot getInstance() {
-        if (instance == null) {
-            instance = new VisitorNot();
-        }
-        return instance;
-    }
-    private VisitorNot() {}
-
-    public Integer visit(Expression a, List<Expression> myExpressions, int i) {
+    public Integer visit(final Expression a, final List<Expression> myExpressions, final Integer i) {
         return i;
     }
 
-    public Integer visit(AndExpression and, List<Expression> myExpressions, int i) {
+    public Integer visit(final AndExpression and, final List<Expression> myExpressions, final Integer i) {
         return i;
     }
-    public Integer visit(OrExpression or, List<Expression> myExpressions, int i) {
+    public Integer visit(final OrExpression or, final List<Expression> myExpressions, final Integer i) {
         return i;
     }
-    public Integer visit(XorExpression xorExpression, List<Expression> myExpressions, int i) {
+    public Integer visit(final XorExpression xorExpression, final List<Expression> myExpressions, final Integer i) {
         return i;
     }
 
-    public Integer visit(NotExpression notExpression, List<Expression> myExpressions, int i) {
+    public Integer visit(final NotExpression notExpression, final List<Expression> myExpressions, final Integer i) {
         notExpression.setMyNOTAssertion(myExpressions.get(i + 1));
         myExpressions.remove(i + 1);
+        return i;
+    }
+
+    @Override
+    public Integer visit(final Value val, final List<Expression> expressions, final Integer i) {
         return i;
     }
 }

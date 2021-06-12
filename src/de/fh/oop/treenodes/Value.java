@@ -1,8 +1,9 @@
 package de.fh.oop.treenodes;
 
+import de.fh.oop.util.visitor.Visitor4Casting;
 import de.fh.oop.util.visitor.Visitor4Tree;
 import de.fh.oop.util.visitor.Visitor4Equals;
-import de.fh.oop.util.visitor.Visitor4Upcasting;
+
 import de.fh.oop.util.visitor.VisitorAusgabe;
 import de.fh.oop.util.factory.ValueFactory;
 
@@ -12,7 +13,7 @@ public class Value implements Expression {
 
     private boolean value = false;
 
-    public Value(boolean value) {
+    public Value(final boolean value) {
         setValue(value);
     }
 
@@ -23,7 +24,7 @@ public class Value implements Expression {
     }
 
     @Override
-    public Integer acceptVisitor(Visitor4Tree v, List<Expression> myExpressions, int i) {
+    public <R, B, C> R acceptVisitor(final Visitor4Tree<R, B, C> v, final B myExpressions, final C i) {
         return v.visit(this, myExpressions, i);
     }
 
@@ -33,20 +34,20 @@ public class Value implements Expression {
     }
 
     @Override
-    public boolean equalStructure(Visitor4Equals v, Expression expression) {
-        if (1 == 1) {
-        return this.getLogicalValue() == expression.getLogicalValue();
-        }
+    public boolean equalStructure(final Visitor4Equals v, final Expression expression) {
+        if (expression.getClass() != this.getClass()) {
             return false;
+        }
+        return this.getLogicalValue() == expression.getLogicalValue();
     }
 
     @Override
-    public void print(String einrueckung) {
+    public void print(final String einrueckung) {
         System.out.println(einrueckung + getLogicalValue());
     }
 
     @Override
-    public boolean equalContent(Expression expression) {
+    public boolean equalContent(final Expression expression) {
         return this.getLogicalValue() == expression.getLogicalValue();
     }
 
@@ -55,9 +56,19 @@ public class Value implements Expression {
         return 1;
     }
 
+//    @Override
+//    public String codeausgabe(VisitorAusgabe v) {
+//        return v.codeausgabe(this);
+//    }
+
     @Override
-    public String codeausgabe(VisitorAusgabe v) {
-        return v.codeausgabe(this);
+    public Boolean equal(final Visitor4Equals v, final Expression exp) {
+        return null;
+    }
+
+//    @Override
+    public Expression cast(final Visitor4Casting v) {
+        return null;
     }
 
 

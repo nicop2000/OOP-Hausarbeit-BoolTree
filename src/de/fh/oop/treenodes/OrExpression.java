@@ -1,24 +1,25 @@
 package de.fh.oop.treenodes;
 
 import de.fh.oop.util.factory.BinaryFactory;
+import de.fh.oop.util.visitor.Visitor4Casting;
 import de.fh.oop.util.visitor.Visitor4Tree;
 import de.fh.oop.util.visitor.Visitor4Equals;
-import de.fh.oop.util.visitor.Visitor4Upcasting;
+
 import de.fh.oop.util.visitor.VisitorAusgabe;
 
 import java.util.List;
 
 public class OrExpression extends BinaryExpression {
 
-    public OrExpression(Expression left, Expression right) {
+    public OrExpression(final Expression left, final Expression right) {
         super(left, right);
     }
 
     @Override
-    public void print(String einrueckung) {
-        System.out.println("||");
-        this.getLeftBranch().print(einrueckung);
-        this.getRightBranch().print(einrueckung);
+    public void print(final String einrueckung) {
+        System.out.println(einrueckung + "||");
+        this.getLeftBranch().print(einrueckung + " ");
+        this.getRightBranch().print(einrueckung + " ");
     }
 
     @Override
@@ -27,13 +28,13 @@ public class OrExpression extends BinaryExpression {
     }
 
     @Override
-    public boolean equalStructure(Visitor4Equals v, Expression expression) {
-        if (1 == 1) {
-
-            return this.getLeftBranch().equals(((OrExpression) expression).getLeftBranch()) &&
-                    this.getRightBranch().equals(((OrExpression) expression).getRightBranch());
+    public boolean equalStructure(final Visitor4Equals v, final Expression expression) {
+        if (expression.getClass() != this.getClass()) {
+            return false;
         }
-        return false;
+
+            return this.getLeftBranch().equalStructure(v, ((OrExpression) expression).getLeftBranch()) &&
+                    this.getRightBranch().equalStructure(v, ((OrExpression) expression).getRightBranch());
     }
 
     @Override
@@ -42,18 +43,28 @@ public class OrExpression extends BinaryExpression {
     }
 
     @Override
-    public Integer acceptVisitor(Visitor4Tree v, List<Expression> myExpressions, int i) {
+    public <R, B, C> R acceptVisitor(final Visitor4Tree<R, B, C> v, final B myExpressions, final C i) {
         return v.visit(this, myExpressions, i);
     }
 
     @Override
-    public boolean equalContent(Expression expression) {
+    public boolean equalContent(final Expression expression) {
         return this.getLogicalValue() == expression.getLogicalValue();
     }
 
+//    @Override
+//    public String codeausgabe(VisitorAusgabe v) {
+//        return v.codeausgabe(this);
+//    }
+
     @Override
-    public String codeausgabe(VisitorAusgabe v) {
-        return v.codeausgabe(this);
+    public Boolean equal(final Visitor4Equals v, final Expression exp) {
+        return null;
+    }
+
+//    @Override
+    public OrExpression cast(final Visitor4Casting v) {
+        return null;
     }
 
     @Override

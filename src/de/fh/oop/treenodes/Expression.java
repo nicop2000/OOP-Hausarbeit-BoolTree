@@ -1,8 +1,8 @@
 package de.fh.oop.treenodes;
 
+import de.fh.oop.util.visitor.Visitor4Casting;
 import de.fh.oop.util.visitor.Visitor4Tree;
 import de.fh.oop.util.visitor.Visitor4Equals;
-import de.fh.oop.util.visitor.Visitor4Upcasting;
 import de.fh.oop.util.visitor.VisitorAusgabe;
 
 import java.util.List;
@@ -15,18 +15,21 @@ public interface Expression {
 
     Expression copy();
 
-    boolean equalStructure(Visitor4Equals v, Expression expression);
+    boolean equalStructure(final Visitor4Equals v, final Expression expression);
 
-    boolean equalContent(Expression expression);
+    boolean equalContent(final Expression expression);
 
-//    boolean equalContent();
+    Boolean equal(final Visitor4Equals v, final Expression exp);
 
-    void print(String einrueckung);
-
-    Integer acceptVisitor(Visitor4Tree v, List<Expression> myExpression, int i);
+    Expression cast(final Visitor4Casting v);
 
 
-    String codeausgabe(VisitorAusgabe v);
+    void print(final String einrueckung);
+
+    <R, B, C> R acceptVisitor(final Visitor4Tree<R, B, C> v, final B myExpression, final C i);
+
+
+//    String codeausgabe(VisitorAusgabe v);
 
     int size();
 

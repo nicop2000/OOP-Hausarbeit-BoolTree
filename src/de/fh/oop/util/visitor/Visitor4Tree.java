@@ -4,13 +4,14 @@ import de.fh.oop.treenodes.*;
 
 import java.util.List;
 
-public interface Visitor4Tree {
+public interface Visitor4Tree<R, B ,C> {
 
-    Integer visit(Expression a, List<Expression> myExpressions, int i);
-    Integer visit(AndExpression and, List<Expression> myExpressions, int i);
-    Integer visit(OrExpression or, List<Expression> myExpressions, int i);
-    Integer visit(XorExpression xorExpression, List<Expression> myExpressions, int i);
-    Integer visit(NotExpression notExpression, List<Expression> myExpressions, int i);
+    R visit(final Expression a, final B myExpressions, final C i);
+    R visit(final AndExpression and, final B myExpressions, final C i);
+    R visit(final OrExpression or, final B myExpressions, final C i);
+    R visit(final XorExpression xorExpression, final B myExpressions, final C i);
+    R visit(final NotExpression notExpression, final B myExpressions, final C i);
+    R visit(final Value val, final B b, C c);
 
 
 

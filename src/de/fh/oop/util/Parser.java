@@ -7,14 +7,15 @@ import de.fh.oop.util.visitor.VisitorBuildTree;
 import de.fh.oop.util.visitor.VisitorNot;
 import de.fh.oop.util.factory.ValueFactory;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class Parser {
 
-
-    public static Expression parseString(String expression) {
+    public static Expression parseString(final String expression) {
+        if (expression.isEmpty()) throw new IllegalArgumentException("Der eingebene Term ist leer");
         String[] ausdruck = expression.toLowerCase().split(" ");
         List<String> ausdruckListe = new ArrayList<>();
         List<Expression> myExpressions = new ArrayList<>();
@@ -25,7 +26,7 @@ public class Parser {
                 case "&&" -> myExpressions.add(BinaryFactory.AND.create(null, null));
                 case "||" -> myExpressions.add(BinaryFactory.OR.create(null, null));
                 case "^" -> myExpressions.add(BinaryFactory.XOR.create(null, null));
-                case "NOT" -> myExpressions.add(UnaryFactory.NOT.create(null));
+                case "not" -> myExpressions.add(UnaryFactory.NOT.create(null));
                 case "true" -> myExpressions.add(ValueFactory.VALUE.create(true));
                 case "false" -> myExpressions.add(ValueFactory.VALUE.create(false));
                 case "(" -> {
@@ -47,22 +48,27 @@ public class Parser {
                     }
                     myExpressions.add(parseString(sb.toString()));
                 }
+                case ")" -> {
+                }
+                default -> throw new IllegalArgumentException("Der eingegebene Ausdruck ist syntaktisch nicht " +
+                        "korrekt!\nDer folgende Teil ist fehlerhaft: " + expression +
+                        " an der Stelle: " + ausdruckListe.get(i));
+
             }
         }
         if (myExpressions.size() > 1) {
             for (int i = 0; i < myExpressions.size(); i++) {
-                i = myExpressions.get(i).acceptVisitor(VisitorNot.getInstance(), myExpressions, i);
-
+                i = myExpressions.get(i).acceptVisitor(new VisitorNot(), myExpressions, i);
             }
             for (int i = 1; i < myExpressions.size() && myExpressions.size() > 1; i++) {
-                i = myExpressions.get(i).acceptVisitor(VisitorBuildTree.getInstance(), myExpressions, i);
-
+                i = myExpressions.get(i).acceptVisitor(new VisitorBuildTree(), myExpressions, i);
             }
         }
         if (myExpressions.size() > 1) {
-        throw new IllegalArgumentException("Der eingegebene Ausdruck ist syntaktisch nicht korrekt! Der folgende Teil ist fehlerhaft: " + expression);
+            throw new IllegalArgumentException("Der eingegebene Ausdruck ist syntaktisch nicht korrekt!\n" +
+                    "Der folgende Teil ist fehlerhaft: " + expression);
 
-}
-        return  myExpressions.get(0);
+        }
+        return myExpressions.get(0);
     }
 }

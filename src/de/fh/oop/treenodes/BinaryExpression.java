@@ -14,7 +14,7 @@ public abstract class BinaryExpression implements Expression {
         return rightBranch;
     }
 
-    public BinaryExpression setRightBranch(Expression rightBranch) {
+    public BinaryExpression setRightBranch(final Expression rightBranch) {
         this.rightBranch = rightBranch;
         return this;
     }
@@ -23,7 +23,7 @@ public abstract class BinaryExpression implements Expression {
         return leftBranch;
     }
 
-    public BinaryExpression setLeftBranch(Expression leftBranch) {
+    public BinaryExpression setLeftBranch(final Expression leftBranch) {
         this.leftBranch = leftBranch;
         return this;
     }

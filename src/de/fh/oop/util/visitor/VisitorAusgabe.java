@@ -2,39 +2,40 @@ package de.fh.oop.util.visitor;
 
 import de.fh.oop.treenodes.*;
 
-public class VisitorAusgabe {
+import java.util.List;
 
-    private static VisitorAusgabe instance = null;
-    public synchronized static VisitorAusgabe getInstance() {
-        if (instance == null) {
-            instance = new VisitorAusgabe();
-        }
-        return instance;
-    }
-    private VisitorAusgabe() {}
+public class VisitorAusgabe implements Visitor4Tree<String, Void, Void>{
 
-    public String codeausgabe(AndExpression and) {
-        return "new AndExpression(" + and.getLeftBranch().codeausgabe(new VisitorAusgabe()) + ", " +
-                and.getRightBranch().codeausgabe(new VisitorAusgabe()) + ")";
-
-    }
-    public String codeausgabe(OrExpression or) {
-        return "new OrExpression(" + or.getLeftBranch().codeausgabe(new VisitorAusgabe()) + ", " +
-                or.getRightBranch().codeausgabe(new VisitorAusgabe()) + ")";
-    }
-    public String codeausgabe(XorExpression xorExpression) {
-        return "new XorExpression(" + xorExpression.getLeftBranch().codeausgabe(new VisitorAusgabe()) + ", " +
-                xorExpression.getRightBranch().codeausgabe(new VisitorAusgabe()) + ")";
-    }
-    public String codeausgabe(NotExpression notExpression) {
-        return "new NotExpression(" + notExpression.getMyNOTAssertion().codeausgabe(new VisitorAusgabe()) + ")";
+    @Override
+    public String visit(final Expression a, final Void myExpressions, final Void i) {
+        return null;
     }
 
-    public String codeausgabe(Value val) {
+    @Override
+    public String visit(final AndExpression and, final Void myExpressions, final Void i) {
+        return "new AndExpression(" + and.getLeftBranch().acceptVisitor(new VisitorAusgabe(), null, null) + ", " +
+                and.getRightBranch().acceptVisitor(new VisitorAusgabe(), null, null) + ")";
+    }
+
+    @Override
+    public String visit(final OrExpression or, final Void myExpressions, final Void i) {
+        return "new OrExpression(" + or.getLeftBranch().acceptVisitor(new VisitorAusgabe(), null, null) + ", " +
+                or.getRightBranch().acceptVisitor(new VisitorAusgabe(), null, null) + ")";
+    }
+
+    @Override
+    public String visit(final XorExpression xorExpression, final Void myExpressions, final Void i) {
+        return "new XorExpression(" + xorExpression.getLeftBranch().acceptVisitor(new VisitorAusgabe(), null, null) + ", " +
+                xorExpression.getRightBranch().acceptVisitor(new VisitorAusgabe(), null, null) + ")";
+    }
+
+    @Override
+    public String visit(final NotExpression notExpression, final Void myExpressions, final Void i) {
+        return "new NotExpression(" + notExpression.getMyNOTAssertion().acceptVisitor(new VisitorAusgabe(), null, null) + ")";
+    }
+
+    @Override
+    public String visit(final Value val, final Void unused, final Void unused2) {
         return "new Value(" + val.getLogicalValue() + ")";
-
     }
-
-
-
 }

@@ -14,10 +14,11 @@ public class MAIN {
         String inputScanner = new Scanner(System.in).nextLine();
         Expression myExpression = Parser.parseString(inputScanner);
         myExpression.print("");
-        String code = myExpression.codeausgabe(VisitorAusgabe.getInstance());
+        String code = myExpression.acceptVisitor(new VisitorAusgabe(), null, null);
         System.out.println(code);
         Expression myExpressionCopy = myExpression.copy();
-        myExpressionCopy.codeausgabe(VisitorAusgabe.getInstance());
+        myExpressionCopy.acceptVisitor(new VisitorAusgabe(), null, null);
+
 //        System.out.println("myExpression.equals(myExpressionCopy): " + myExpression.acceptVisitor(new Visitor4Equals(), myExpressionCopy));
 
     }
