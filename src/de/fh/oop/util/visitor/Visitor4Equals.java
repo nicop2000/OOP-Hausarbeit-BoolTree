@@ -22,7 +22,11 @@ public class Visitor4Equals {
         return true;
     }
 
-//    public Boolean visit(Expression a, Expression a2) {return false;}
+    public Boolean visit(AndExpression a, Expression a2) {
+//        a.equalStructure(new Visitor4Equals(), a2.cast(new Visitor4Casting()));
+        this.visit(a, a2.cast(new Visitor4Casting()));
+        return true;
+    }
 
 
 

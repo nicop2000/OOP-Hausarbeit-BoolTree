@@ -14,18 +14,16 @@ public class AndExpression extends BinaryExpression {
     @Override
     public int size() {
         return getLeftBranch().size() + getRightBranch().size() + 1;
-
     }
-
 
     @Override
     public Expression copy() {
-        return BinaryFactory.AND.create(this.getLeftBranch(), this.getRightBranch());
+        return BinaryFactory.AND.create(this.getLeftBranch().copy(), this.getRightBranch().copy());
     }
 
     @Override
     public boolean equalStructure(final Visitor4Equals v, final Expression expression) {
-        if (expression.getClass() != this.getClass()) {
+        if (/*v.visit(this, expression)*/expression.getClass() != this.getClass()) {
             return false;
         }
         return this.getLeftBranch().equalStructure(v, ((AndExpression) expression).getLeftBranch()) &&
@@ -44,7 +42,6 @@ public class AndExpression extends BinaryExpression {
 
     @Override
     public void print(final String einrueckung) {
-
         System.out.println(einrueckung + "&&");
         this.getLeftBranch().print(einrueckung + " ");
         this.getRightBranch().print(einrueckung + " ");
@@ -52,7 +49,7 @@ public class AndExpression extends BinaryExpression {
 
     @Override
     public Boolean equal(final Visitor4Equals v, final Expression exp) {
-        return  false /*v.visit(this, exp.cast(new Visitor4Casting()))*/;
+        return false /*v.visit(this, exp.cast(new Visitor4Casting()))*/;
     }
 
     @Override

@@ -7,6 +7,8 @@ import de.fh.oop.util.visitor.VisitorBuildTree;
 import de.fh.oop.util.visitor.VisitorNot;
 import de.fh.oop.util.factory.ValueFactory;
 
+import java.io.IOError;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,14 +58,14 @@ public class Parser {
 
             }
         }
-        if (myExpressions.size() > 1) {
-            for (int i = 0; i < myExpressions.size(); i++) {
-                i = myExpressions.get(i).acceptVisitor(new VisitorNot(), myExpressions, i);
-            }
-            for (int i = 1; i < myExpressions.size() && myExpressions.size() > 1; i++) {
-                i = myExpressions.get(i).acceptVisitor(new VisitorBuildTree(), myExpressions, i);
-            }
+
+        for (int i = 0; i < myExpressions.size(); i++) {
+            i = myExpressions.get(i).acceptVisitor(new VisitorNot(), myExpressions, i);
         }
+        for (int i = 1; i < myExpressions.size() && myExpressions.size() > 1; i++) {
+            i = myExpressions.get(i).acceptVisitor(new VisitorBuildTree(), myExpressions, i);
+        }
+
         if (myExpressions.size() > 1) {
             throw new IllegalArgumentException("Der eingegebene Ausdruck ist syntaktisch nicht korrekt!\n" +
                     "Der folgende Teil ist fehlerhaft: " + expression);

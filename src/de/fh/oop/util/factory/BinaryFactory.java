@@ -8,19 +8,19 @@ import de.fh.oop.treenodes.XorExpression;
 public enum BinaryFactory {
     AND {
         @Override
-        public Expression create(final Expression leftBranch, final Expression rightBranch) {
+        public AndExpression create(final Expression leftBranch, final Expression rightBranch) {
             return new AndExpression(leftBranch, rightBranch);
         }
     },
     OR {
         @Override
-        public Expression create(final Expression leftBranch, final Expression rightBranch) {
+        public OrExpression create(final Expression leftBranch, final Expression rightBranch) {
             return new OrExpression(leftBranch, rightBranch);
         }
     },
     XOR {
         @Override
-        public Expression create(final Expression leftBranch, final Expression rightBranch) {
+        public XorExpression create(final Expression leftBranch, final Expression rightBranch) {
             return new XorExpression(leftBranch, rightBranch);
         }
     };

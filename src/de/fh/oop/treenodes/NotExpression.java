@@ -24,13 +24,13 @@ public class NotExpression implements Expression {
         return this.myNOTExpression.equalStructure(v, ((NotExpression) expression).getMyNOTAssertion());
     }
 
+    public Expression getMyNOTAssertion() {
+        return myNOTExpression;
+    }
+
     public NotExpression setMyNOTAssertion(final Expression notExpression) {
         myNOTExpression = notExpression;
         return this;
-    }
-
-    public Expression getMyNOTAssertion() {
-        return myNOTExpression;
     }
 
     @Override
@@ -53,14 +53,14 @@ public class NotExpression implements Expression {
         return null;
     }
 
-//    @Override
+    //    @Override
     public NotExpression cast(final Visitor4Casting v) {
         return null;
     }
 
     @Override
     public Expression copy() {
-        return UnaryFactory.NOT.create(getMyNOTAssertion());
+        return UnaryFactory.NOT.create(getMyNOTAssertion().copy());
     }
 
 //    @Override

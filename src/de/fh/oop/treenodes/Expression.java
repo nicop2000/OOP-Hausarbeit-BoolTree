@@ -21,6 +21,7 @@ public interface Expression {
 
     Boolean equal(final Visitor4Equals v, final Expression exp);
 
+
     Expression cast(final Visitor4Casting v);
 
 

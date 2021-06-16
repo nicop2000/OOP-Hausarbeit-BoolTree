@@ -5,6 +5,7 @@ import de.fh.oop.util.Parser;
 import de.fh.oop.util.visitor.Visitor4Equals;
 import de.fh.oop.util.visitor.VisitorAusgabe;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class MAIN {
@@ -18,6 +19,7 @@ public class MAIN {
         System.out.println(code);
         Expression myExpressionCopy = myExpression.copy();
         myExpressionCopy.acceptVisitor(new VisitorAusgabe(), null, null);
+
 
 //        System.out.println("myExpression.equals(myExpressionCopy): " + myExpression.acceptVisitor(new Visitor4Equals(), myExpressionCopy));
 

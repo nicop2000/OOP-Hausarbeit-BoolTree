@@ -13,6 +13,8 @@ public class Visitor4Casting {
         return and;
     }
 
+    public Expression visit(AndExpression and1, Expression expAnd) { return expAnd.cast(new Visitor4Casting());}
+
     public Expression visit(Expression exp, Expression exp2) {
         return exp;
     }

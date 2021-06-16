@@ -39,7 +39,7 @@ public class OrExpression extends BinaryExpression {
 
     @Override
     public Expression copy() {
-        return BinaryFactory.OR.create(this.getLeftBranch(), this.getRightBranch());
+        return BinaryFactory.OR.create(this.getLeftBranch().copy(), this.getRightBranch().copy());
     }
 
     @Override
@@ -62,7 +62,7 @@ public class OrExpression extends BinaryExpression {
         return null;
     }
 
-//    @Override
+    @Override
     public OrExpression cast(final Visitor4Casting v) {
         return null;
     }

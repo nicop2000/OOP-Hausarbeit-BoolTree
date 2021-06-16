@@ -2,6 +2,7 @@ package de.fh.oop.util.visitor;
 
 import de.fh.oop.treenodes.*;
 
+import java.io.IOException;
 import java.util.List;
 
 public class VisitorNot implements Visitor4Tree<Integer, List<Expression>, Integer> {

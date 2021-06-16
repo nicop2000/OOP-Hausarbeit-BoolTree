@@ -27,7 +27,7 @@ public class XorExpression extends BinaryExpression {
 
     @Override
     public Expression copy() {
-        return BinaryFactory.XOR.create(this.getLeftBranch(), this.getRightBranch());
+        return BinaryFactory.XOR.create(this.getLeftBranch().copy(), this.getRightBranch().copy());
     }
 
     @Override

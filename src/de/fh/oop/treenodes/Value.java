@@ -56,10 +56,7 @@ public class Value implements Expression {
         return 1;
     }
 
-//    @Override
-//    public String codeausgabe(VisitorAusgabe v) {
-//        return v.codeausgabe(this);
-//    }
+
 
     @Override
     public Boolean equal(final Visitor4Equals v, final Expression exp) {

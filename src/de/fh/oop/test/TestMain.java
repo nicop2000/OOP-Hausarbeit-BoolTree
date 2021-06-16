@@ -84,4 +84,14 @@ public class TestMain {
         assertTrue(ex1.equalStructure(new Visitor4Equals(), ex2));
 
     }
+
+    @Test
+    void cast() {
+        Expression e = new AndExpression(new Value(true), new Value(true));
+        Expression e2 = e.copy();
+        e.equalStructure(new Visitor4Equals(), e2);
+        System.out.println(e);
+        System.out.println(e2);
+
+    }
 }
