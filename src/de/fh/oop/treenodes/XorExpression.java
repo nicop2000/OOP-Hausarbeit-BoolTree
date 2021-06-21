@@ -2,22 +2,13 @@ package de.fh.oop.treenodes;
 
 import de.fh.oop.util.factory.BinaryFactory;
 import de.fh.oop.util.visitor.Visitor4Casting;
-import de.fh.oop.util.visitor.Visitor4Tree;
 import de.fh.oop.util.visitor.Visitor4Equals;
-
-import de.fh.oop.util.visitor.VisitorAusgabe;
-
-import java.util.List;
+import de.fh.oop.util.visitor.Visitor4Tree;
 
 public class XorExpression extends BinaryExpression {
 
     public XorExpression(final Expression left, final Expression right) {
         super(left, right);
-    }
-
-    @Override
-    public boolean getLogicalValue() {
-        return getLeftBranch().getLogicalValue() ^ getRightBranch().getLogicalValue();
     }
 
     @Override
@@ -29,6 +20,24 @@ public class XorExpression extends BinaryExpression {
     public Expression copy() {
         return BinaryFactory.XOR.create(this.getLeftBranch().copy(), this.getRightBranch().copy());
     }
+
+    @Override
+    public boolean getLogicalValue() {
+        return getLeftBranch().getLogicalValue() ^ getRightBranch().getLogicalValue();
+    }
+
+    @Override
+    public void print(final String einrueckung) {
+        System.out.println(einrueckung + "^");
+        this.getLeftBranch().print(einrueckung + " ");
+        this.getRightBranch().print(einrueckung + " ");
+    }
+
+
+
+
+
+
 
     @Override
     public boolean equalStructure(final Visitor4Equals v, final Expression expression) {
@@ -61,10 +70,5 @@ public class XorExpression extends BinaryExpression {
         return this.getLogicalValue() == expression.getLogicalValue();
     }
 
-    @Override
-    public void print(final String einrueckung) {
-        System.out.println(einrueckung + "^");
-        this.getLeftBranch().print(einrueckung + " ");
-        this.getRightBranch().print(einrueckung + " ");
-    }
+
 }

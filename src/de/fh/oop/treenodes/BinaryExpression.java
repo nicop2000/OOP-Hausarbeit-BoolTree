@@ -6,7 +6,7 @@ public abstract class BinaryExpression implements Expression {
     private Expression leftBranch = null;
 
 
-    BinaryExpression(final Expression left, final Expression right) {
+    protected BinaryExpression(final Expression left, final Expression right) {
         this.setLeftBranch(left).setRightBranch(right);
     }
 

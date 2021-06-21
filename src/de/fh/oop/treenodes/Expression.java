@@ -1,15 +1,10 @@
 package de.fh.oop.treenodes;
 
 import de.fh.oop.util.visitor.Visitor4Casting;
-import de.fh.oop.util.visitor.Visitor4Tree;
 import de.fh.oop.util.visitor.Visitor4Equals;
-import de.fh.oop.util.visitor.VisitorAusgabe;
-
-import java.util.List;
+import de.fh.oop.util.visitor.Visitor4Tree;
 
 public interface Expression {
-
-
 
     boolean getLogicalValue();
 

@@ -6,7 +6,7 @@ import de.fh.oop.treenodes.Value;
 public enum ValueFactory {
     VALUE {
         @Override
-        public Expression create(final Boolean value) {
+        public Value create(final Boolean value) {
             return new Value(value);
         }
     };

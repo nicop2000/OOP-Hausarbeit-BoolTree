@@ -1,5 +1,6 @@
 package de.fh.oop.util.visitor;
 
+import de.fh.oop.treenodes.XorExpression;
 import de.fh.oop.treenodes.*;
 
 public class Visitor4Equals {

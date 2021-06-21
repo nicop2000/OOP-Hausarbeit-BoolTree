@@ -2,12 +2,8 @@ package de.fh.oop.treenodes;
 
 import de.fh.oop.util.factory.BinaryFactory;
 import de.fh.oop.util.visitor.Visitor4Casting;
-import de.fh.oop.util.visitor.Visitor4Tree;
 import de.fh.oop.util.visitor.Visitor4Equals;
-
-import de.fh.oop.util.visitor.VisitorAusgabe;
-
-import java.util.List;
+import de.fh.oop.util.visitor.Visitor4Tree;
 
 public class OrExpression extends BinaryExpression {
 
@@ -16,11 +12,27 @@ public class OrExpression extends BinaryExpression {
     }
 
     @Override
+    public <R, B, C> R acceptVisitor(final Visitor4Tree<R, B, C> v, final B myExpressions, final C i) {
+        return v.visit(this, myExpressions, i);
+    }
+
+    @Override
+    public Expression copy() {
+        return BinaryFactory.OR.create(this.getLeftBranch().copy(), this.getRightBranch().copy());
+    }
+
+    @Override
+    public boolean getLogicalValue() {
+        return this.getLeftBranch().getLogicalValue() || this.getRightBranch().getLogicalValue();
+    }
+
+    @Override
     public void print(final String einrueckung) {
         System.out.println(einrueckung + "||");
         this.getLeftBranch().print(einrueckung + " ");
         this.getRightBranch().print(einrueckung + " ");
     }
+
 
     @Override
     public int size() {
@@ -38,24 +50,10 @@ public class OrExpression extends BinaryExpression {
     }
 
     @Override
-    public Expression copy() {
-        return BinaryFactory.OR.create(this.getLeftBranch().copy(), this.getRightBranch().copy());
-    }
-
-    @Override
-    public <R, B, C> R acceptVisitor(final Visitor4Tree<R, B, C> v, final B myExpressions, final C i) {
-        return v.visit(this, myExpressions, i);
-    }
-
-    @Override
     public boolean equalContent(final Expression expression) {
         return this.getLogicalValue() == expression.getLogicalValue();
     }
 
-//    @Override
-//    public String codeausgabe(VisitorAusgabe v) {
-//        return v.codeausgabe(this);
-//    }
 
     @Override
     public Boolean equal(final Visitor4Equals v, final Expression exp) {
@@ -67,8 +65,5 @@ public class OrExpression extends BinaryExpression {
         return null;
     }
 
-    @Override
-    public boolean getLogicalValue() {
-        return this.getLeftBranch().getLogicalValue() || this.getRightBranch().getLogicalValue();
-    }
+
 }

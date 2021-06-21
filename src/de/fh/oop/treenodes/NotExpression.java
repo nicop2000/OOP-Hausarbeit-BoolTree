@@ -1,19 +1,53 @@
 package de.fh.oop.treenodes;
 
-import de.fh.oop.util.visitor.Visitor4Casting;
-import de.fh.oop.util.visitor.Visitor4Tree;
-import de.fh.oop.util.visitor.Visitor4Equals;
-
-import de.fh.oop.util.visitor.VisitorAusgabe;
 import de.fh.oop.util.factory.UnaryFactory;
-
-import java.util.List;
+import de.fh.oop.util.visitor.Visitor4Casting;
+import de.fh.oop.util.visitor.Visitor4Equals;
+import de.fh.oop.util.visitor.Visitor4Tree;
 
 public class NotExpression implements Expression {
-    private Expression myNOTExpression = null;
+
+    private Expression myNotExpression = null;
+
+    public Expression getMyNotAssertion() {
+        return myNotExpression;
+    }
+
+    public NotExpression setMyNotAssertion(final Expression notExpression) {
+        myNotExpression = notExpression;
+        return this;
+    }
 
     public NotExpression(final Expression notExpression) {
-        setMyNOTAssertion(notExpression);
+        setMyNotAssertion(notExpression);
+    }
+
+
+
+
+
+
+
+    @Override
+    public <R, B, C> R acceptVisitor(final Visitor4Tree<R, B, C> v, final B myExpressions, final C i) {
+        return v.visit(this, myExpressions, i);
+    }
+
+    @Override
+    public Expression copy() {
+        return UnaryFactory.NOT.create(getMyNotAssertion().copy());
+    }
+
+    @Override
+    public boolean getLogicalValue() {
+        return !getMyNotAssertion().getLogicalValue();
+    }
+
+    @Override
+    public void print(final String einrueckung) {
+        System.out.print(einrueckung + "–");
+        getMyNotAssertion().print(einrueckung);
+
     }
 
     @Override
@@ -21,26 +55,7 @@ public class NotExpression implements Expression {
         if (expression.getClass() != this.getClass()) {
             return false;
         }
-        return this.myNOTExpression.equalStructure(v, ((NotExpression) expression).getMyNOTAssertion());
-    }
-
-    public Expression getMyNOTAssertion() {
-        return myNOTExpression;
-    }
-
-    public NotExpression setMyNOTAssertion(final Expression notExpression) {
-        myNOTExpression = notExpression;
-        return this;
-    }
-
-    @Override
-    public boolean getLogicalValue() {
-        return !getMyNOTAssertion().getLogicalValue();
-    }
-
-    @Override
-    public <R, B, C> R acceptVisitor(final Visitor4Tree<R, B, C> v, final B myExpressions, final C i) {
-        return v.visit(this, myExpressions, i);
+        return this.myNotExpression.equalStructure(v, ((NotExpression) expression).getMyNotAssertion());
     }
 
     @Override
@@ -53,31 +68,16 @@ public class NotExpression implements Expression {
         return null;
     }
 
-    //    @Override
+    @Override
     public NotExpression cast(final Visitor4Casting v) {
         return null;
     }
 
     @Override
-    public Expression copy() {
-        return UnaryFactory.NOT.create(getMyNOTAssertion().copy());
-    }
-
-//    @Override
-//    public String codeausgabe(VisitorAusgabe v) {
-//        return v.codeausgabe(this);
-//    }
-
-    @Override
     public int size() {
-        return getMyNOTAssertion().size() + 1;
+        return getMyNotAssertion().size() + 1;
     }
 
-    @Override
-    public void print(final String einrueckung) {
-        System.out.print("–");
-        getMyNOTAssertion().print(einrueckung);
 
-    }
 
 }

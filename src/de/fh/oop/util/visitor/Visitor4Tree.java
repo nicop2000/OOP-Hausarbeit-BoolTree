@@ -1,9 +1,7 @@
 package de.fh.oop.util.visitor;
 
+import de.fh.oop.treenodes.XorExpression;
 import de.fh.oop.treenodes.*;
-
-import java.io.IOException;
-import java.util.List;
 
 public interface Visitor4Tree<R, B ,C> {
 

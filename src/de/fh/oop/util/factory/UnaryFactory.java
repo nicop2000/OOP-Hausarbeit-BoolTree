@@ -6,7 +6,7 @@ import de.fh.oop.treenodes.NotExpression;
 public enum UnaryFactory{
     NOT {
         @Override
-        public Expression create(final Expression expression) {
+        public NotExpression create(final Expression expression) {
             return new NotExpression(expression);
         }
     };

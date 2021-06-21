@@ -1,9 +1,9 @@
 package de.fh.oop.util.factory;
 
+import de.fh.oop.treenodes.XorExpression;
 import de.fh.oop.treenodes.AndExpression;
 import de.fh.oop.treenodes.Expression;
 import de.fh.oop.treenodes.OrExpression;
-import de.fh.oop.treenodes.XorExpression;
 
 public enum BinaryFactory {
     AND {

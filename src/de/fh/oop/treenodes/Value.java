@@ -1,13 +1,9 @@
 package de.fh.oop.treenodes;
 
-import de.fh.oop.util.visitor.Visitor4Casting;
-import de.fh.oop.util.visitor.Visitor4Tree;
-import de.fh.oop.util.visitor.Visitor4Equals;
-
-import de.fh.oop.util.visitor.VisitorAusgabe;
 import de.fh.oop.util.factory.ValueFactory;
-
-import java.util.List;
+import de.fh.oop.util.visitor.Visitor4Casting;
+import de.fh.oop.util.visitor.Visitor4Equals;
+import de.fh.oop.util.visitor.Visitor4Tree;
 
 public class Value implements Expression {
 
@@ -17,10 +13,13 @@ public class Value implements Expression {
         setValue(value);
     }
 
+    private Value setValue(final boolean value) {
+        this.value = value;
+        return this;
+    }
 
-    @Override
-    public boolean getLogicalValue() {
-        return isValue();
+    public boolean getValue() {
+        return value;
     }
 
     @Override
@@ -34,6 +33,22 @@ public class Value implements Expression {
     }
 
     @Override
+    public boolean getLogicalValue() {
+        return getValue();
+    }
+
+    @Override
+    public void print(final String einrueckung) {
+        System.out.println(einrueckung + getLogicalValue());
+    }
+
+
+
+
+
+
+
+    @Override
     public boolean equalStructure(final Visitor4Equals v, final Expression expression) {
         if (expression.getClass() != this.getClass()) {
             return false;
@@ -41,10 +56,7 @@ public class Value implements Expression {
         return this.getLogicalValue() == expression.getLogicalValue();
     }
 
-    @Override
-    public void print(final String einrueckung) {
-        System.out.println(einrueckung + getLogicalValue());
-    }
+
 
     @Override
     public boolean equalContent(final Expression expression) {
@@ -69,12 +81,5 @@ public class Value implements Expression {
     }
 
 
-    private Value setValue(final boolean value) {
-        this.value = value;
-        return this;
-    }
 
-    public boolean isValue() {
-        return value;
-    }
 }

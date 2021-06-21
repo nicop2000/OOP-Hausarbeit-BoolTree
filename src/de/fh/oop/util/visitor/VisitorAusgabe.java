@@ -1,11 +1,13 @@
 package de.fh.oop.util.visitor;
 
+import de.fh.oop.treenodes.XorExpression;
 import de.fh.oop.treenodes.*;
 
 public class VisitorAusgabe implements Visitor4Tree<String, Void, Void>{
 
     @Override
     public String visit(final Expression a, final Void myExpressions, final Void i) {
+        System.out.println("-ERROR OCCURED: VisitorAusgabe --> visited Expression");
         return null;
     }
 
@@ -29,7 +31,7 @@ public class VisitorAusgabe implements Visitor4Tree<String, Void, Void>{
 
     @Override
     public String visit(final NotExpression notExpression, final Void myExpressions, final Void i) {
-        return "new NotExpression(" + notExpression.getMyNOTAssertion().acceptVisitor(this, null, null) + ")";
+        return "new NotExpression(" + notExpression.getMyNotAssertion().acceptVisitor(this, null, null) + ")";
     }
 
     @Override

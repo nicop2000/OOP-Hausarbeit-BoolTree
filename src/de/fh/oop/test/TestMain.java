@@ -5,7 +5,6 @@ import de.fh.oop.treenodes.Expression;
 import de.fh.oop.treenodes.OrExpression;
 import de.fh.oop.treenodes.Value;
 import de.fh.oop.util.Parser;
-import de.fh.oop.util.visitor.Visitor4Casting;
 import de.fh.oop.util.visitor.Visitor4Equals;
 import de.fh.oop.util.visitor.VisitorAusgabe;
 import org.junit.jupiter.api.Test;
@@ -19,17 +18,17 @@ public class TestMain {
 
     @Test
     void parse() {
-        Expression eins = Parser.parseString("true && ( false || true )");
-        Expression zwei = Parser.parseString("( true || false ) && true");
-        Expression drei = Parser.parseString("false && false && false && false || true )");
-        Expression vier = Parser.parseString("true && true && true");
+        Expression eins = Parser.parseString("true and ( false or true )");
+        Expression zwei = Parser.parseString("( true or false ) and true");
+        Expression drei = Parser.parseString("false and false and false and false or true )");
+        Expression vier = Parser.parseString("true and true and true");
         assertTrue(eins.equalContent(zwei));
         assertTrue(drei.equalContent(vier));
     }
 
     @Test
     void codeausgabe() {
-        assertEquals(Parser.parseString("true && ( false || ( true && false ) )")
+        assertEquals(Parser.parseString("true and ( false or ( true and false ) )")
                         .acceptVisitor(new VisitorAusgabe(), null, null),
                 "new AndExpression(new Value(true), new OrExpression(new Value(false), " +
                         "new AndExpression(new Value(true), new Value(false))))");
@@ -79,7 +78,8 @@ public class TestMain {
 
 
     void equalThree(Expression ex1, Expression ex2) {
-        assertEquals(ex1.acceptVisitor(new VisitorAusgabe(), null, null), ex2.acceptVisitor(new VisitorAusgabe(), null, null));
+        assertEquals(ex1.acceptVisitor(new VisitorAusgabe(), null, null),
+                ex2.acceptVisitor(new VisitorAusgabe(), null, null));
         assertTrue(ex2.equalContent(ex1));
         assertTrue(ex1.equalStructure(new Visitor4Equals(), ex2));
 
@@ -93,5 +93,21 @@ public class TestMain {
         System.out.println(e);
         System.out.println(e2);
 
+    }
+
+    @Test
+    void parseSomeStrings() {
+        assertTrue(Parser.parseString("true and ( ( ( false or true ) and true ) or true and false ) or ( true and ( false or true ) and true and true ) and false").getLogicalValue());
+        assertFalse(Parser.parseString("true xor false and ( ( false and Not true and false or true ) and false or not true ) and not true xor not false").getLogicalValue());
+        assertFalse(Parser.parseString("( true and ( ( ( false or true ) and true ) or true and false ) or ( true and ( false or true ) and true and true ) and false ) and ( true xor false and ( ( false and Not true and false or true ) and false or not true ) and not true xor not false )").getLogicalValue());
+        assertFalse(Parser.parseString("not not false").getLogicalValue());
+        int b = 4;
+    }
+
+    @Test
+    void catchExceptions(){
+        assertThrows(IllegalArgumentException.class, () -> {
+            Parser.parseString("true false");
+        });
     }
 }
