@@ -65,10 +65,4 @@ public class XorExpression extends BinaryExpression {
         return getLeftBranch().size() + getRightBranch().size() + 1;
     }
 
-    @Override
-    public boolean equalContent(final Expression expression) {
-        return this.getLogicalValue() == expression.getLogicalValue();
-    }
-
-
 }

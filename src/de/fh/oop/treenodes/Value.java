@@ -57,12 +57,6 @@ public class Value implements Expression {
     }
 
 
-
-    @Override
-    public boolean equalContent(final Expression expression) {
-        return this.getLogicalValue() == expression.getLogicalValue();
-    }
-
     @Override
     public int size() {
         return 1;

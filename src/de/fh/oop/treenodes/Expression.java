@@ -12,7 +12,9 @@ public interface Expression {
 
     boolean equalStructure(final Visitor4Equals v, final Expression expression);
 
-    boolean equalContent(final Expression expression);
+    default boolean equalContent(final Expression expression) {
+        return this.getLogicalValue() == expression.getLogicalValue();
+    };
 
     Boolean equal(final Visitor4Equals v, final Expression exp);
 

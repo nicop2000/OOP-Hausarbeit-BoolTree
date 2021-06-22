@@ -59,11 +59,6 @@ public class NotExpression implements Expression {
     }
 
     @Override
-    public boolean equalContent(final Expression expression) {
-        return this.getLogicalValue() == expression.getLogicalValue();
-    }
-
-    @Override
     public Boolean equal(final Visitor4Equals v, final Expression exp) {
         return null;
     }

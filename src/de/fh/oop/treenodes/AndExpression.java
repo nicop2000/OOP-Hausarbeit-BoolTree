@@ -45,13 +45,6 @@ public class AndExpression extends BinaryExpression {
 
 
 
-
-
-    @Override
-    public boolean equalContent(final Expression expression) {
-        return this.getLogicalValue() == expression.getLogicalValue();
-    }
-
     @Override
     public boolean equalStructure(final Visitor4Equals v, final Expression expression) {
         if (/*v.visit(this, expression)*/expression.getClass() != this.getClass()) {

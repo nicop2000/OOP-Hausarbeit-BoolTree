@@ -1,12 +1,8 @@
 package de.fh.oop.util;
 
-import de.fh.oop.util.visitor.VisitorBuildAnd;
-import de.fh.oop.util.visitor.VisitorBuildNot;
-import de.fh.oop.util.visitor.VisitorBuildRest;
-import de.fh.oop.treenodes.Expression;
-import de.fh.oop.util.factory.BinaryFactory;
-import de.fh.oop.util.factory.UnaryFactory;
-import de.fh.oop.util.factory.ValueFactory;
+import de.fh.oop.treenodes.*;
+import de.fh.oop.util.factory.*;
+import de.fh.oop.util.visitor.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +10,11 @@ import java.util.List;
 
 public class Parser {
 
+    /**
+     * nimmt einen String entgegen und wandelt ihn in einen Baum aus Bool'schen Ausdrücken um
+     */
     public static Expression parseString(final String expression) {
+
         if (expression.isEmpty()) throw new IllegalArgumentException("Der eingebene Term ist leer");
         String[] ausdruck = expression.toLowerCase().split(" ");
         List<String> ausdruckListe = new ArrayList<>();

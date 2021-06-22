@@ -1,12 +1,9 @@
 package de.fh.oop.test;
 
-import de.fh.oop.treenodes.AndExpression;
-import de.fh.oop.treenodes.Expression;
-import de.fh.oop.treenodes.OrExpression;
-import de.fh.oop.treenodes.Value;
+import de.fh.oop.treenodes.*;
+import de.fh.oop.util.visitor.*;
 import de.fh.oop.util.Parser;
-import de.fh.oop.util.visitor.Visitor4Equals;
-import de.fh.oop.util.visitor.VisitorAusgabe;
+
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -36,7 +33,7 @@ public class TestMain {
 
     @Test
     void print() {
-        Expression myExp = new AndExpression(new OrExpression(new Value (true), new Value(false)), new Value(true));
+        Expression myExp = new AndExpression(new OrExpression(new Value(true), new Value(false)), new Value(true));
         // PrintStream für Speicherung von System.out.println erstellen
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         PrintStream printStream = new PrintStream(byteArrayOutputStream);
@@ -97,17 +94,44 @@ public class TestMain {
 
     @Test
     void parseSomeStrings() {
-        assertTrue(Parser.parseString("true and ( ( ( false or true ) and true ) or true and false ) or ( true and ( false or true ) and true and true ) and false").getLogicalValue());
+        assertTrue(Parser.parseString("true and ( ( ( false or true ) and true ) or true and false ) or ( " +
+                "true and ( false or true ) and true and true ) and false").getLogicalValue());
         assertFalse(Parser.parseString("true xor false and ( ( false and Not true and false or true ) and false or not true ) and not true xor not false").getLogicalValue());
-        assertFalse(Parser.parseString("( true and ( ( ( false or true ) and true ) or true and false ) or ( true and ( false or true ) and true and true ) and false ) and ( true xor false and ( ( false and Not true and false or true ) and false or not true ) and not true xor not false )").getLogicalValue());
+        assertFalse(Parser.parseString("( true and ( ( ( false or true ) and true ) or true and false ) or" +
+                " ( true and ( false or true ) and true and true ) and false ) and ( true xor false and ( ( false and" +
+                " Not true and false or true ) and false or not true ) and not true xor not false )").getLogicalValue());
         assertFalse(Parser.parseString("not not false").getLogicalValue());
+        Parser.parseString("false or ( false xor false ) and ( false and true ) and ( true xor true ) or " +
+                "false and not false or false xor ( false xor true ) xor ( false and true ) or ( true or false ) or " +
+                "true xor true or ( true or true ) xor ( false or false ) or ( true xor true ) or true and not false " +
+                "and true or false or not true xor false");
+        Expression exp = Parser.parseString("false and ( true and true ) or ( false or false ) or ( true " +
+                "or true ) xor ( true or false ) or ( false and true ) xor ( true and false ) or ( false or true ) " +
+                "and ( false xor true ) and false or not false and false and ( false or true ) and ( true and false )" +
+                " and ( false or true ) and ( true and true ) and ( true or true ) xor ( true or true ) or ( false or" +
+                " false ) or ( false xor false ) xor false or true or ( true and false ) xor ( true and false ) xor " +
+                "( false or false ) or ( false xor true ) and ( true or true ) or ( false xor false ) or ( true and" +
+                " true ) xor ( false xor true ) and false or not false or false xor false or false or ( true or false" +
+                " ) or ( true xor true ) or ( false and false ) xor ( false xor true ) or ( true xor false ) xor" +
+                " ( true xor true ) or ( false or false ) xor ( true and false ) or false or true xor false xor not" +
+                " true xor false xor false xor false xor ( false or true ) and ( false or false ) or ( true or false" +
+                " ) or ( false or false ) and ( true xor false ) and ( false or false ) or ( true or false ) xor (" +
+                " false xor true ) and false or not true and true and true xor not false or false");
+        exp.print("");
         int b = 4;
     }
 
     @Test
-    void catchExceptions(){
+    void catchExceptions() {
         assertThrows(IllegalArgumentException.class, () -> {
             Parser.parseString("true false");
         });
+    }
+
+    @Test
+    void testSth() {
+        Expression exp1 = new AndExpression(new Value(true), new Value(true));
+        Expression exp2 = new OrExpression(new Value(false), new Value(true));
+        System.out.println(exp1.equalContent(exp2));
     }
 }

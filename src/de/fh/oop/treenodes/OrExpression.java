@@ -49,11 +49,6 @@ public class OrExpression extends BinaryExpression {
                     this.getRightBranch().equalStructure(v, ((OrExpression) expression).getRightBranch());
     }
 
-    @Override
-    public boolean equalContent(final Expression expression) {
-        return this.getLogicalValue() == expression.getLogicalValue();
-    }
-
 
     @Override
     public Boolean equal(final Visitor4Equals v, final Expression exp) {
