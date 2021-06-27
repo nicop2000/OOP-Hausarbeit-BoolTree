@@ -10,10 +10,18 @@ import java.util.List;
 
 public class Parser {
 
-    /**
+
+    private static Parser INSTANCE = null;
+    public static synchronized Parser getINSTANCE() {
+        if(INSTANCE == null) INSTANCE = new Parser();
+        return INSTANCE;
+    }
+    private Parser() {};
+
+    /*
      * nimmt einen String entgegen und wandelt ihn in einen Baum aus Bool'schen Ausdrücken um
      */
-    public static Expression parseString(final String expression) {
+    public Expression parseString(final String expression) {
 
         if (expression.isEmpty()) throw new IllegalArgumentException("Der eingebene Term ist leer");
         String[] ausdruck = expression.toLowerCase().split(" ");
@@ -31,13 +39,14 @@ public class Parser {
                 case "true" -> myExpressions.add(ValueFactory.VALUE.create(true));
                 case "false" -> myExpressions.add(ValueFactory.VALUE.create(false));
                 case "(" -> {
+                    //Erst die Klammerausdrücke durch rekursiven Aufruf verarbeiten
                     int klammern = 0;
                     inParas.clear();
-                    //Erst die Klammerausdrücke durch rekursiven Aufruf verarbeiten
+                    //Ausdruck in den Klammern finden mit zugehöriger schließender Klammer
                     while (!ausdruckListe.get(i).equals(")") || klammern != 1) {
                         if (ausdruckListe.get(i).equals(")")) klammern--;
                         if (ausdruckListe.get(i).equals("(")) klammern++;
-                        if (klammern < 0) throw new IllegalArgumentException("Der eingegebene Ausdruck ist " +
+                        if (klammern < 0 || (i + 1) > ausdruckListe.size() - 1) throw new IllegalArgumentException("Der eingegebene Ausdruck ist " +
                                 "syntaktisch nicht korrekt!\nDer folgende Teil ist fehlerhaft: " + expression);
                         inParas.add(ausdruckListe.get(i));
                         ausdruckListe.remove(i);
@@ -47,10 +56,12 @@ public class Parser {
                     inParas.remove(0);
                     ausdruckListe.remove(i);
                     i--;
+                    //Klammerausdruck wieder in einen für den Parser richtig formatierten String verwandeln
                     StringBuilder sb = new StringBuilder();
                     for (String s : inParas) {
                         sb.append(s).append(" ");
                     }
+                    //Rekursion starten
                     myExpressions.add(parseString(sb.toString()));
 
                 }
@@ -61,21 +72,21 @@ public class Parser {
             }
         }
 
-        /**
+        /*
          * Erst alle NotExpression verarbeiten, da sie die höchste Bindung haben
          */
         for (int i = myExpressions.size() - 1; i >= 0; i--) {
             i = myExpressions.get(i).acceptVisitor(new VisitorBuildNot(), myExpressions, i);
         }
 
-        /**
+        /*
          * Danach alle AndExpressions verbinden, da sie als nächsthöhere Operator in der Hierarchie stehen
          */
         for (int i = 1; i < myExpressions.size() - 1 && myExpressions.size() > 1; i++) {
             i = myExpressions.get(i).acceptVisitor(new VisitorBuildAnd(), myExpressions, i);
         }
 
-        /**
+        /*
          * Als Letztes XorExpression und OrExpression verbinden. Da sie die gleiche Rangfolge haben,
          * können diese beiden Operatorn gemeinsam verarbeitet werden
          */
@@ -83,7 +94,7 @@ public class Parser {
             i = myExpressions.get(i).acceptVisitor(new VisitorBuildRest(), myExpressions, i);
         }
 
-        /**
+        /*
          * Die Methode darf nur einen Ausdruck zurückgeben. Andererseits war die Eingabe falsch
          */
         if (myExpressions.size() > 1) {

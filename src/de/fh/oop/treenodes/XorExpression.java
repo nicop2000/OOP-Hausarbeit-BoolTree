@@ -1,65 +1,69 @@
 package de.fh.oop.treenodes;
 
 import de.fh.oop.util.factory.BinaryFactory;
-import de.fh.oop.util.visitor.Visitor4Casting;
-import de.fh.oop.util.visitor.Visitor4Equals;
 import de.fh.oop.util.visitor.Visitor4Tree;
 
 public class XorExpression extends BinaryExpression {
+
+    private final Type type = Type.XOR;
+
+    public Type getType() {
+        return type;
+    }
 
     public XorExpression(final Expression left, final Expression right) {
         super(left, right);
     }
 
+    /**
+     * nimmt generischen Visitor entgegen <Rückgabetyp, Parameter 2, Parameter 3>
+     */
     @Override
-    public <R, B, C> R acceptVisitor(final Visitor4Tree<R, B, C> v, final B myExpressions, final C i) {
-        return v.visit(this, myExpressions, i);
+    public <R, B, C> R acceptVisitor(Visitor4Tree<R, B, C> visitor, B b, C c) {
+        return visitor.visit(this, b, c);
     }
 
+    /*
+     * erstellt eine exakte Kopie der Instanz
+     */
     @Override
     public Expression copy() {
         return BinaryFactory.XOR.create(this.getLeftBranch().copy(), this.getRightBranch().copy());
     }
 
+    /*
+     * gibt den Bool'schen Wert des Ausdrucks zurück
+     */
     @Override
     public boolean getLogicalValue() {
         return getLeftBranch().getLogicalValue() ^ getRightBranch().getLogicalValue();
     }
 
+    /*
+     * erstellt eine Stringausgabe des Baumes
+     */
     @Override
-    public void print(final String einrueckung) {
-        System.out.println(einrueckung + "^");
-        this.getLeftBranch().print(einrueckung + " ");
-        this.getRightBranch().print(einrueckung + " ");
+    public String print(final String indent) {
+        return indent + "^\n" + this.getLeftBranch().print(indent + " ") + "\n" + this.getRightBranch().print(indent + " ");
     }
 
-
-
-
-
-
-
+    /*
+     * prüft, ob ein Knoten, inklusive Kinder, einem anderen exakt gleicht
+     */
     @Override
-    public boolean equalStructure(final Visitor4Equals v, final Expression expression) {
-        if (expression.getClass() != this.getClass()) {
+    public boolean equalStructure(final Expression expression) {
+        if (!(this.getType() == expression.getType())) {
             return false;
         }
-        return this.getLeftBranch().equalStructure(v, ((XorExpression) expression).getLeftBranch()) &&
-                this.getRightBranch().equalStructure(v, ((XorExpression) expression).getRightBranch());
+        return getLeftBranch().equalStructure(((XorExpression) expression).getLeftBranch()) && getRightBranch().equalStructure(((XorExpression) expression).getRightBranch());
+
     }
 
 
 
-    @Override
-    public Boolean equal(final Visitor4Equals v, final Expression exp) {
-        return null;
-    }
-
-//    @Override
-    public Expression cast(final Visitor4Casting v) {
-        return null;
-    }
-
+    /*
+     * gitb die Anzahl der Knoten des Teilbaums zurück, von dem 'this' der Knoten ist
+     */
     @Override
     public int size() {
         return getLeftBranch().size() + getRightBranch().size() + 1;

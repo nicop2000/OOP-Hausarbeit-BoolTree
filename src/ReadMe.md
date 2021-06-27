@@ -17,3 +17,7 @@ Thema: Bool'sche Ausdrücke
 - Eine Kopie eines Baumes erzeugen
 - Einen Baum auf _strukturelle_ Gleichheit zu einem anderen Baum prüfen
 - Einen Baum auf _inhaltliche_ Gleichheit zu einem anderen Baum prüfen
+
+---
+###Anforderungen
+Es muss Java Version 14 oder höher verwendet werden.

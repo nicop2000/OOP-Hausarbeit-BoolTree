@@ -5,6 +5,10 @@ import de.fh.oop.treenodes.AndExpression;
 import de.fh.oop.treenodes.Expression;
 import de.fh.oop.treenodes.OrExpression;
 
+/*
+ * Factory zum Erstellen der binären Operatoren
+ */
+
 public enum BinaryFactory {
     AND {
         @Override
