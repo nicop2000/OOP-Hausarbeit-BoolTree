@@ -1,7 +1,11 @@
 package de.fh.oop.util.visitor;
 
-import de.fh.oop.treenodes.XorExpression;
 import de.fh.oop.treenodes.*;
+
+/*
+ * Generisches Interface für alle Visitoren. Wird gebraucht, damit alle Visitoren über die acceptVisitor-Methode
+ * entgegengenommen werden können
+ */
 
 public interface Visitor4Tree<R, B ,C> {
 

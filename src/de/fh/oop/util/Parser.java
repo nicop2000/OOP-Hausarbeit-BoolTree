@@ -1,8 +1,12 @@
 package de.fh.oop.util;
 
-import de.fh.oop.treenodes.*;
-import de.fh.oop.util.factory.*;
-import de.fh.oop.util.visitor.*;
+import de.fh.oop.treenodes.Expression;
+import de.fh.oop.util.factory.BinaryFactory;
+import de.fh.oop.util.factory.UnaryFactory;
+import de.fh.oop.util.factory.ValueFactory;
+import de.fh.oop.util.visitor.VisitorBuildAnd;
+import de.fh.oop.util.visitor.VisitorBuildNot;
+import de.fh.oop.util.visitor.VisitorBuildRest;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,12 +15,17 @@ import java.util.List;
 public class Parser {
 
 
-    private static Parser INSTANCE = null;
-    public static synchronized Parser getINSTANCE() {
-        if(INSTANCE == null) INSTANCE = new Parser();
-        return INSTANCE;
+    private static Parser instance = null;
+
+    private Parser() {
     }
-    private Parser() {};
+
+    public static synchronized Parser getInstance() {
+        if (instance == null) instance = new Parser();
+        return instance;
+    }
+
+    ;
 
     /*
      * nimmt einen String entgegen und wandelt ihn in einen Baum aus Bool'schen Ausdrücken um
@@ -27,7 +36,6 @@ public class Parser {
         String[] ausdruck = expression.toLowerCase().split(" ");
         List<String> ausdruckListe = new ArrayList<>();
         List<Expression> myExpressions = new ArrayList<>();
-        List<String> inParas = new ArrayList<>();
         Collections.addAll(ausdruckListe, ausdruck);
         //List mit (teils leeren) Elementen erstellen, werden später verbunden
         for (int i = 0; i < ausdruckListe.size(); i++) {
@@ -41,13 +49,14 @@ public class Parser {
                 case "(" -> {
                     //Erst die Klammerausdrücke durch rekursiven Aufruf verarbeiten
                     int klammern = 0;
-                    inParas.clear();
+                    List<String> inParas = new ArrayList<>();
                     //Ausdruck in den Klammern finden mit zugehöriger schließender Klammer
                     while (!ausdruckListe.get(i).equals(")") || klammern != 1) {
                         if (ausdruckListe.get(i).equals(")")) klammern--;
                         if (ausdruckListe.get(i).equals("(")) klammern++;
-                        if (klammern < 0 || (i + 1) > ausdruckListe.size() - 1) throw new IllegalArgumentException("Der eingegebene Ausdruck ist " +
-                                "syntaktisch nicht korrekt!\nDer folgende Teil ist fehlerhaft: " + expression);
+                        if (klammern < 0 || (i + 1) > ausdruckListe.size() - 1)
+                            throw new IllegalArgumentException("Der eingegebene Ausdruck ist " +
+                                    "syntaktisch nicht korrekt!\nDer folgende Teil ist fehlerhaft: " + expression);
                         inParas.add(ausdruckListe.get(i));
                         ausdruckListe.remove(i);
                     }
@@ -65,12 +74,16 @@ public class Parser {
                     myExpressions.add(parseString(sb.toString()));
 
                 }
-                case ")" -> {}
+                case ")" -> {
+                }
+                //unbekanntes Zeichen im Ausdruck-String gefunden
                 default -> throw new IllegalArgumentException("Der eingegebene Ausdruck ist syntaktisch nicht " +
                         "korrekt!\nDer folgende Teil ist fehlerhaft: " + expression +
                         " an der Stelle: " + ausdruckListe.get(i));
             }
         }
+
+
 
         /*
          * Erst alle NotExpression verarbeiten, da sie die höchste Bindung haben
@@ -82,7 +95,7 @@ public class Parser {
         /*
          * Danach alle AndExpressions verbinden, da sie als nächsthöhere Operator in der Hierarchie stehen
          */
-        for (int i = 1; i < myExpressions.size() - 1 && myExpressions.size() > 1; i++) {
+        for (int i = 1; i < myExpressions.size() - 1; i++) {
             i = myExpressions.get(i).acceptVisitor(new VisitorBuildAnd(), myExpressions, i);
         }
 
@@ -90,7 +103,7 @@ public class Parser {
          * Als Letztes XorExpression und OrExpression verbinden. Da sie die gleiche Rangfolge haben,
          * können diese beiden Operatorn gemeinsam verarbeitet werden
          */
-        for (int i = 1; i < myExpressions.size() && myExpressions.size() > 1; i++) {
+        for (int i = 1; i < myExpressions.size(); i++) {
             i = myExpressions.get(i).acceptVisitor(new VisitorBuildRest(), myExpressions, i);
         }
 
@@ -103,4 +116,5 @@ public class Parser {
         }
         return myExpressions.get(0);
     }
+
 }

@@ -59,8 +59,6 @@ public class XorExpression extends BinaryExpression {
 
     }
 
-
-
     /*
      * gitb die Anzahl der Knoten des Teilbaums zurück, von dem 'this' der Knoten ist
      */

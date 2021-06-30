@@ -1,6 +1,5 @@
 package de.fh.oop.util.visitor;
 
-import de.fh.oop.treenodes.XorExpression;
 import de.fh.oop.treenodes.*;
 
 public class VisitorCodeausgabe implements Visitor4Tree<String, Void, Void>{

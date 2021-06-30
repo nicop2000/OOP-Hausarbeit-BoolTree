@@ -1,26 +1,30 @@
 package de.fh.oop.test;
 
-import de.fh.oop.treenodes.*;
-import de.fh.oop.util.visitor.*;
+import de.fh.oop.treenodes.AndExpression;
+import de.fh.oop.treenodes.Expression;
+import de.fh.oop.treenodes.OrExpression;
+import de.fh.oop.treenodes.Value;
 import de.fh.oop.util.Parser;
+import de.fh.oop.util.visitor.VisitorCodeausgabe;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestMain {
 
     @Test
     void parse() {
-        Expression eins = Parser.getINSTANCE().parseString("true and ( false or true )");
-        Expression zwei = Parser.getINSTANCE().parseString("( true or false ) and true");
-        Expression drei = Parser.getINSTANCE().parseString("false and false and false and false or true )");
-        Expression vier = Parser.getINSTANCE().parseString("true and true and true");
+        Expression eins = Parser.getInstance().parseString("true and ( false or true )");
+        Expression zwei = Parser.getInstance().parseString("( true or false ) and true");
+        Expression drei = Parser.getInstance().parseString("false and false and false and false or true )");
+        Expression vier = Parser.getInstance().parseString("true and true and true");
         assertTrue(eins.equalContent(zwei));
         assertTrue(drei.equalContent(vier));
     }
 
     @Test
     void codeausgabe() {
-        assertEquals(Parser.getINSTANCE().parseString("true and ( false or ( true and false ) )")
+        assertEquals(Parser.getInstance().parseString("true and ( false or ( true and false ) )")
                         .acceptVisitor(new VisitorCodeausgabe(), null, null),
                 "new AndExpression(new Value(true), new OrExpression(new Value(false), " +
                         "new AndExpression(new Value(true), new Value(false))))");
@@ -70,24 +74,27 @@ public class TestMain {
     void cast() {
         Expression e = new AndExpression(new Value(true), new Value(true));
         Expression e2 = e.copy();
-        e.equalStructure(e2);
-        System.out.println(e);
-        System.out.println(e2);
+        System.out.println(e.equalStructure(e2));
+
 
     }
 
     @Test
     void parseSomeStrings() {
-        assertTrue(Parser.getINSTANCE().parseString("true and ( ( ( false or true ) and true ) or true and false ) or ( " +
-                "true and ( false or true ) and not true and true ) and false").getLogicalValue());
-        assertFalse(Parser.getINSTANCE().parseString("true xor false and ( ( false and Not true and false or true ) and false or not true ) and not true xor not false").getLogicalValue());
-        assertFalse(Parser.getINSTANCE().parseString("( true and ( ( ( false or true ) and true ) or true and false ) or ( true and ( false or true ) and true and true ) and false ) and ( true xor false and ( ( false and Not true and false or true ) and false or not true ) and not true xor not false )").getLogicalValue());
-        assertFalse(Parser.getINSTANCE().parseString("not not false").getLogicalValue());
-        Parser.getINSTANCE().parseString("false or ( false xor false ) and ( false and true ) and ( true xor true ) or " +
-                "false and not false or false xor ( false xor true ) xor ( false and true ) or ( true or false ) or " +
-                "true xor true or ( true or true ) xor ( false or false ) or ( true xor true ) or true and not false " +
-                "and true or false or not true xor false");
-        Expression exp = Parser.getINSTANCE().parseString("false and ( true and true ) or ( false or false ) or ( true " +
+        assertTrue(Parser.getInstance().parseString("true and ( ( ( false or true ) and true ) or true " +
+                "and false ) or ( true and ( false or true ) and not true and true ) and false").getLogicalValue());
+        assertFalse(Parser.getInstance().parseString("true xor false and ( ( false and Not true and false " +
+                "or true ) and false or not true ) and not true xor not false").getLogicalValue());
+        assertFalse(Parser.getInstance().parseString("( true and ( ( ( false or true ) and true ) or true " +
+                "and false ) or ( true and ( false or true ) and true and true ) and false ) and ( true xor false " +
+                "and ( ( false and Not true and false or true ) and false or not true ) and not true xor not " +
+                "false )").getLogicalValue());
+        assertFalse(Parser.getInstance().parseString("not not false").getLogicalValue());
+        Parser.getInstance().parseString("false or ( false xor false ) and ( false and true ) and ( true" +
+                " xor true ) or false and not false or false xor ( false xor true ) xor ( false and true ) or ( " +
+                "true or false ) or true xor true or ( true or true ) xor ( false or false ) or ( true xor true ) " +
+                "or true and not false and true or false or not true xor false");
+        Parser.getInstance().parseString("false and ( true and true ) or ( false or false ) or ( true " +
                 "or true ) xor ( true or false ) or ( false and true ) xor ( true and false ) or ( false or true ) " +
                 "and ( false xor true ) and false or not false and false and ( false or true ) and ( true and false )" +
                 " and ( false or true ) and ( true and true ) and ( true or true ) xor ( true or true ) or ( false or" +
@@ -99,37 +106,30 @@ public class TestMain {
                 " true xor false xor false xor false xor ( false or true ) and ( false or false ) or ( true or false" +
                 " ) or ( false or false ) and ( true xor false ) and ( false or false ) or ( true or false ) xor (" +
                 " false xor true ) and false or not true and true and true xor not false or false");
-        Expression exp2 = Parser.getINSTANCE().parseString("false and ( true and true ) or ( false or false ) or ( true or true ) xor ( true or false ) or ( false and true ) xor ( true and false ) or ( false or true ) and ( false xor true ) and false or not false and false and ( false or true ) and ( true and false ) and ( false or true ) and ( true and true ) and ( true or true ) xor ( true or true ) or ( false or false ) or ( false xor false ) xor false or true or ( true and false ) xor ( true and false ) xor ( false or false ) or ( false xor true ) and ( true or true ) or ( false xor false ) or ( true and true ) xor ( false xor true ) and false or not false or false xor false or false or ( true or false ) or ( true xor true ) or ( false and false ) xor ( false xor true ) or ( true xor false ) xor ( true xor true ) or ( false or false ) xor ( true and false ) or false or true xor false xor not true xor false xor false xor false xor ( false or true ) and ( false or false ) or ( true or false ) or ( false or false ) and ( true xor false ) and ( false or false ) or ( true or false ) xor ( false xor true ) and false or not true and true and true xor not false or false");
-        System.out.println(exp2.getLogicalValue());
-        System.out.println(exp2.print(""));
-        int b = 4;
+       Parser.getInstance().parseString("false and ( true and true ) or ( false or false ) or ( true or " +
+               "true ) xor ( true or false ) or ( false and true ) xor ( true and false ) or ( false or true ) and" +
+               " ( false xor true ) and false or not false and false and ( false or true ) and ( true and false ) and" +
+               " ( false or true ) and ( true and true ) and ( true or true ) xor ( true or true ) or ( false or " +
+               "false ) or ( false xor false ) xor false or true or ( true and false ) xor ( true and false ) xor" +
+               " ( false or false ) or ( false xor true ) and ( true or true ) or ( false xor false ) or ( true and" +
+               " true ) xor ( false xor true ) and false or not false or false xor false or false or ( true or false" +
+               " ) or ( true xor true ) or ( false and false ) xor ( false xor true ) or ( true xor false ) xor ( " +
+               "true xor true ) or ( false or false ) xor ( true and false ) or false or true xor false xor not " +
+               "true xor false xor false xor false xor ( false or true ) and ( false or false ) or ( true or false" +
+               " ) or ( false or false ) and ( true xor false ) and ( false or false ) or ( true or false ) xor (" +
+               " false xor true ) and false or not true and true and true xor not false or false");
     }
 
     @Test
     void catchExceptions() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            Parser.getINSTANCE().parseString("true false");
-        });
-        assertThrows(IllegalArgumentException.class, () -> {
-            Parser.getINSTANCE().parseString("true and and false");
-        });
-        assertThrows(IllegalArgumentException.class, () -> {
-            Parser.getINSTANCE().parseString("true (false");
-        });
-        assertThrows(IllegalArgumentException.class, () -> {
-            Parser.getINSTANCE().parseString("true ( false");
-        });
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            Parser.getINSTANCE().parseString("not ture or fals");
-        });
-
-    }
-
-    @Test
-    void testSth() {
-        Expression exp1 = new AndExpression(new Value(true), new Value(true));
-        Expression exp2 = new AndExpression(new Value(true), new Value(true));
-        System.out.println(exp1.equalStructure(exp2));
+        assertThrows(IllegalArgumentException.class, () -> Parser.getInstance().parseString("true false"));
+        assertThrows(IllegalArgumentException.class, () -> Parser.getInstance().parseString("true and and false"));
+        assertThrows(IllegalArgumentException.class, () -> Parser.getInstance().parseString("true (false"));
+        assertThrows(IllegalArgumentException.class, () -> Parser.getInstance().parseString("true ( false"));
+        assertThrows(IllegalArgumentException.class, () -> Parser.getInstance().parseString("not ture or fals"));
+        assertThrows(IllegalArgumentException.class, () -> Parser.getInstance().parseString("( true and ) false"));
+        assertThrows(IllegalArgumentException.class, () -> Parser.getInstance().parseString(""));
+        assertThrows(IllegalArgumentException.class, () -> Parser.getInstance().parseString("true AND false OR false ( )"));
+        assertThrows(Exception.class, () -> Parser.getInstance().parseString("true AND ( NOT ) false"));
     }
 }

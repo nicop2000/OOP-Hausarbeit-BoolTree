@@ -1,8 +1,8 @@
 package de.fh.oop;
 
-import de.fh.oop.treenodes.*;
-import de.fh.oop.util.*;
-import de.fh.oop.util.visitor.*;
+import de.fh.oop.treenodes.Expression;
+import de.fh.oop.util.Parser;
+import de.fh.oop.util.visitor.VisitorCodeausgabe;
 
 import java.util.Scanner;
 
@@ -13,7 +13,7 @@ public class Main {
 
         String inputScanner = new Scanner(System.in).nextLine();
 
-        Expression myExpression = Parser.getINSTANCE().parseString(inputScanner);
+        Expression myExpression = Parser.getInstance().parseString(inputScanner);
 
         System.out.println("\nDer Term \"" + inputScanner +"\" hat den logischen Wert \"" + myExpression.getLogicalValue() + "\"" );
         System.out.println("Der Baum dazu sieht wie folgt aus:");
@@ -32,7 +32,7 @@ public class Main {
 
         System.out.println("\nBitte einen weiteren Bool'schen Ausdruck zum Vergleich mit dem Vorherigen eingeben (mit Leerzeichen trennen, auch bei Klammern): ");
         String inputScanner2 = new Scanner(System.in).nextLine();
-        Expression myExpression2 = Parser.getINSTANCE().parseString(inputScanner2);
+        Expression myExpression2 = Parser.getInstance().parseString(inputScanner2);
         System.out.println("Der Baum dazu sieht wie folgt aus:");
         System.out.println(myExpression2.print(""));
         System.out.println("Der Code zur Instanziierung diese Baumes lautet: " + myExpression2.acceptVisitor(new VisitorCodeausgabe(), null, null));
