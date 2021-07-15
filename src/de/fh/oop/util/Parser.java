@@ -14,18 +14,14 @@ import java.util.List;
 
 public class Parser {
 
-
+    //Singleton-Pattern
     private static Parser instance = null;
-
     private Parser() {
     }
-
     public static synchronized Parser getInstance() {
         if (instance == null) instance = new Parser();
         return instance;
     }
-
-    ;
 
     /*
      * nimmt einen String entgegen und wandelt ihn in einen Baum aus Bool'schen Ausdrücken um

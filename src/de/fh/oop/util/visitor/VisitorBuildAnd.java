@@ -7,7 +7,7 @@ import java.util.List;
 public class VisitorBuildAnd implements Visitor4Tree<Integer, List<Expression>, Integer> {
 
 
-    /**
+    /*
      * nimmt Liste der Ausdrücke und Index entgegen und fügt dem Und-Operator mit den entsprechenden Ausdrücken zusammen und
      * entfernt diese anschließend aus der Liste. Gibt i - 1 zurück, da die Liste um ein verkürzt wurde und sonst
      * nicht alle Elemente bahndelt würden
